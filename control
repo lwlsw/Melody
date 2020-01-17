@@ -1,0 +1,12 @@
+Package: sh.litten.melody
+Name: Melody
+Depends: mobilesubstrate, preferenceloader, firmware (>= 11), ws.hbang.common (>= 1.14), com.spark.libsparkcolourpicker
+Version: 1.0-lovely
+Architecture: iphoneos-arm
+Description: Can You Hear Those Colorful Melodies?
+Maintainer: Litten <hello@litten.sh>
+Author: Litten <hello@litten.sh>
+Section: Tweaks
+Depiction: https://repo.litten.sh/depictions/mdy/index.html
+SileoDepiction: https://repo.litten.sh/depictions/mdy/mdy.json
+Icon: https://repo.litten.sh/depictions/mdy/assets/icon.png
