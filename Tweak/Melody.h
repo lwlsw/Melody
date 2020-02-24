@@ -17,6 +17,7 @@ BOOL colorUIButtonLabelSwitch = NO;
 BOOL colorMPButtonSwitch = NO;
 BOOL colorMPRouteButtonSwitch = NO;
 BOOL colorUISwitchSwitch = NO;
+BOOL colorCSQuickActionsButtonSwitch = NO;
 // Color Options
 BOOL useCustomColorSwitch = NO;
 NSString* colorString = @"#147efb";
@@ -45,6 +46,9 @@ NSString* customMPRouteButtonString = @"#147efb";
 BOOL useCustomUISwitchColorSwitch = NO;
 NSString* customUISwitchString = @"#147efb";
 
+BOOL useCustomCSQuickActionsButtonColorSwitch = NO;
+NSString* customCSQuickActionsButtonString = @"#ffffff";
+
 //Interfaces
 @interface _UIButtonBarButton : NSObject
 @property(nonatomic, assign, readwrite)UIColor* tintColor;
@@ -64,6 +68,11 @@ NSString* customUISwitchString = @"#147efb";
 
 @interface MPRouteButton : NSObject
 @property(nonatomic, assign, readwrite)UIColor* tintColor;
+@end
+
+@interface CSQuickActionsButton : NSObject
+@property(nonatomic, assign, readwrite)UIColor* tintColor;
+- (id)_viewControllerForAncestor;
 @end
 
 @interface SBIconController : UIViewController

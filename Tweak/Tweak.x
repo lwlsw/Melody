@@ -72,32 +72,29 @@ void setPreset() {
 
 - (void)setTintColor:(UIColor *)arg1 { // We could also just modify the layoutSubviews but i rather use the method which is used for it
 
-    int presetNumber = [selectedPreset intValue];
-        // this part looks for the value in our preferences file
-    NSDictionary* preferencesDictionary = [NSDictionary dictionaryWithContentsOfFile: @"/var/mobile/Library/Preferences/sh.litten.melodypreferences.plist"];
-    colorString = [preferencesDictionary objectForKey: @"customColor"];
-    customUIButtonString = [preferencesDictionary objectForKey: @"customUIButtonPicker"];
-        // if melody's color switches are toggled it should color the buttons with the color pickers value
-    if (enabled && useCustomColorSwitch && presetNumber == 0) {
-        UIColor* selectedColor = [SparkColourPickerUtils colourWithString: colorString withFallback: @"#147efb"];
+    if (enabled && colorUIButtonSwitch) {
+        int presetNumber = [selectedPreset intValue];
+            // this part looks for the value in our preferences file
+        NSDictionary* preferencesDictionary = [NSDictionary dictionaryWithContentsOfFile: @"/var/mobile/Library/Preferences/sh.litten.melodypreferences.plist"];
+        colorString = [preferencesDictionary objectForKey: @"customColor"];
+        customUIButtonString = [preferencesDictionary objectForKey: @"customUIButtonPicker"];
+            // if melody's color switches are toggled it should color the buttons with the color pickers value
+        if (useCustomColorSwitch && presetNumber == 0) {
+            UIColor* selectedColor = [SparkColourPickerUtils colourWithString: colorString withFallback: @"#147efb"];
+            
+            %orig(selectedColor);
+            // this is used if the user wants to use a custom color specifically for this option
+        } else if (useCustomColorSwitch && useCustomUIButtonColorSwitch) {
+            UIColor* selectedCustomColor = [SparkColourPickerUtils colourWithString: customUIButtonString withFallback: @"#147efb"];
+            %orig(selectedCustomColor);
+            // this is used to color the buttons with a preset, you can see that because the presetNumber is not going to be 0
+        } else if (useCustomColorSwitch && presetNumber != 0) {
+            setPreset(); // this again sets the appropriate color preset
+            UIColor* selectedColor = [SparkColourPickerUtils colourWithString: presetHex withFallback: @"#147efb"];
 
-        if (enabled && colorUIButtonSwitch) {
-		    %orig(selectedColor);
+            %orig(selectedColor);
 
-	    }
-        // this is used if the user wants to use a custom color specifically for this option
-    } else if (useCustomColorSwitch && useCustomUIButtonColorSwitch) {
-        UIColor* selectedCustomColor = [SparkColourPickerUtils colourWithString: customUIButtonString withFallback: @"#147efb"];
-        %orig(selectedCustomColor);
-        // this is used to color the buttons with a preset, you can see that because the presetNumber is not going to be 0
-    } else if (useCustomColorSwitch && presetNumber != 0) {
-        setPreset(); // this again sets the appropriate color preset
-        UIColor* selectedColor = [SparkColourPickerUtils colourWithString: presetHex withFallback: @"#147efb"];
-
-        if (enabled && colorUIButtonSwitch) {
-		    %orig(selectedColor);
-
-	    }
+        }
 
     } else {
         %orig;
@@ -112,32 +109,29 @@ void setPreset() {
 
 - (void)setTintColor:(UIColor *)arg1 {
 
-    int presetNumber = [selectedPreset intValue];
+    if (enabled && colorUIButtonBarButtonSwitch) {
+        int presetNumber = [selectedPreset intValue];
 
-    NSDictionary* preferencesDictionary = [NSDictionary dictionaryWithContentsOfFile: @"/var/mobile/Library/Preferences/sh.litten.melodypreferences.plist"];
-    colorString = [preferencesDictionary objectForKey: @"customColor"];
-    customUIButtonBarButtonString = [preferencesDictionary objectForKey: @"customUIButtonBarButtonPicker"];
-    
-    if (enabled && useCustomColorSwitch && presetNumber == 0) {
-        UIColor* selectedColor = [SparkColourPickerUtils colourWithString: colorString withFallback: @"#147efb"];
+        NSDictionary* preferencesDictionary = [NSDictionary dictionaryWithContentsOfFile: @"/var/mobile/Library/Preferences/sh.litten.melodypreferences.plist"];
+        colorString = [preferencesDictionary objectForKey: @"customColor"];
+        customUIButtonBarButtonString = [preferencesDictionary objectForKey: @"customUIButtonBarButtonPicker"];
+        
+        if (useCustomColorSwitch && presetNumber == 0) {
+            UIColor* selectedColor = [SparkColourPickerUtils colourWithString: colorString withFallback: @"#147efb"];
 
-        if (enabled && colorUIButtonBarButtonSwitch) {
-		    %orig(selectedColor);
+            %orig(selectedColor);
 
-	    }
+        } else if (useCustomColorSwitch && useCustomUIButtonBarButtonColorSwitch) {
+            UIColor* selectedCustomColor = [SparkColourPickerUtils colourWithString: customUIButtonBarButtonString withFallback: @"#147efb"];
+            %orig(selectedCustomColor);
 
-    } else if (useCustomColorSwitch && useCustomUIButtonBarButtonColorSwitch) {
-        UIColor* selectedCustomColor = [SparkColourPickerUtils colourWithString: customUIButtonBarButtonString withFallback: @"#147efb"];
-        %orig(selectedCustomColor);
+        } else if (useCustomColorSwitch && presetNumber != 0) {
+            setPreset();
+            UIColor* selectedColor = [SparkColourPickerUtils colourWithString: presetHex withFallback: @"#147efb"];
 
-    } else if (useCustomColorSwitch && presetNumber != 0) {
-        setPreset();
-        UIColor* selectedColor = [SparkColourPickerUtils colourWithString: presetHex withFallback: @"#147efb"];
+            %orig(selectedColor);
 
-        if (enabled && colorUIButtonBarButtonSwitch) {
-		    %orig(selectedColor);
-
-	    }
+        }
 
     } else {
         %orig;
@@ -152,32 +146,29 @@ void setPreset() {
 
 - (void)setTintColor:(UIColor *)arg1 {
 
-    int presetNumber = [selectedPreset intValue];
+    if (enabled && colorUITabBarButtonSwitch) {
+        int presetNumber = [selectedPreset intValue];
 
-    NSDictionary* preferencesDictionary = [NSDictionary dictionaryWithContentsOfFile: @"/var/mobile/Library/Preferences/sh.litten.melodypreferences.plist"];
-    colorString = [preferencesDictionary objectForKey: @"customColor"];
-    customUITabBarButtonString = [preferencesDictionary objectForKey: @"customUITabBarButtonPicker"];
-    
-    if (enabled && useCustomColorSwitch && presetNumber == 0) {
-        UIColor* selectedColor = [SparkColourPickerUtils colourWithString: colorString withFallback: @"#147efb"];
+        NSDictionary* preferencesDictionary = [NSDictionary dictionaryWithContentsOfFile: @"/var/mobile/Library/Preferences/sh.litten.melodypreferences.plist"];
+        colorString = [preferencesDictionary objectForKey: @"customColor"];
+        customUITabBarButtonString = [preferencesDictionary objectForKey: @"customUITabBarButtonPicker"];
+        
+        if (useCustomColorSwitch && presetNumber == 0) {
+            UIColor* selectedColor = [SparkColourPickerUtils colourWithString: colorString withFallback: @"#147efb"];
+            
+            %orig(selectedColor);
 
-        if (enabled && colorUITabBarButtonSwitch) {
-		    %orig(selectedColor);
+        } else if (useCustomColorSwitch && useCustomUITabBarButtonColorSwitch) {
+            UIColor* selectedCustomColor = [SparkColourPickerUtils colourWithString: customUITabBarButtonString withFallback: @"#147efb"];
+            %orig(selectedCustomColor);
 
-	    }
+        } else if (useCustomColorSwitch && presetNumber != 0) {
+            setPreset();
+            UIColor* selectedColor = [SparkColourPickerUtils colourWithString: presetHex withFallback: @"#147efb"];
 
-    } else if (useCustomColorSwitch && useCustomUITabBarButtonColorSwitch) {
-        UIColor* selectedCustomColor = [SparkColourPickerUtils colourWithString: customUITabBarButtonString withFallback: @"#147efb"];
-        %orig(selectedCustomColor);
+            %orig(selectedColor);
 
-    } else if (useCustomColorSwitch && presetNumber != 0) {
-        setPreset();
-        UIColor* selectedColor = [SparkColourPickerUtils colourWithString: presetHex withFallback: @"#147efb"];
-
-        if (enabled && colorUITabBarButtonSwitch) {
-		    %orig(selectedColor);
-
-	    }
+        }
 
     } else {
         %orig;
@@ -194,32 +185,29 @@ void setPreset() {
 
     %orig;
 
-    int presetNumber = [selectedPreset intValue];
+    if (enabled && colorUIButtonLabelSwitch) {
+        int presetNumber = [selectedPreset intValue];
 
-    NSDictionary* preferencesDictionary = [NSDictionary dictionaryWithContentsOfFile: @"/var/mobile/Library/Preferences/sh.litten.melodypreferences.plist"];
-    colorString = [preferencesDictionary objectForKey: @"customColor"];
-    customUIButtonLabelString = [preferencesDictionary objectForKey: @"customUIButtonLabelPicker"];
-    
-    if (enabled && useCustomColorSwitch && presetNumber == 0) {
-        UIColor* selectedColor = [SparkColourPickerUtils colourWithString: colorString withFallback: @"#147efb"];
+        NSDictionary* preferencesDictionary = [NSDictionary dictionaryWithContentsOfFile: @"/var/mobile/Library/Preferences/sh.litten.melodypreferences.plist"];
+        colorString = [preferencesDictionary objectForKey: @"customColor"];
+        customUIButtonLabelString = [preferencesDictionary objectForKey: @"customUIButtonLabelPicker"];
+        
+        if (useCustomColorSwitch && presetNumber == 0) {
+            UIColor* selectedColor = [SparkColourPickerUtils colourWithString: colorString withFallback: @"#147efb"];
+            
+            self.textColor = selectedColor; // instead of the %orig we now change it directly
 
-        if (enabled && colorUIButtonLabelSwitch) {
-		    self.textColor = selectedColor; // instead of the %orig we now change it directly
+        } else if (useCustomColorSwitch && useCustomUIButtonLabelColorSwitch) {
+            UIColor* selectedCustomColor = [SparkColourPickerUtils colourWithString: customUIButtonLabelString withFallback: @"#147efb"];
+            self.textColor = selectedCustomColor; // same here, but with the presets again
 
-	    }
+        } else if (useCustomColorSwitch && presetNumber != 0) {
+            setPreset();
+            UIColor* selectedColor = [SparkColourPickerUtils colourWithString: presetHex withFallback: @"#147efb"];
+            
+            self.textColor = selectedColor; // same here, but with the presets again
 
-    } else if (useCustomColorSwitch && useCustomUIButtonLabelColorSwitch) {
-        UIColor* selectedCustomColor = [SparkColourPickerUtils colourWithString: customUIButtonLabelString withFallback: @"#147efb"];
-        self.textColor = selectedCustomColor; // same here, but with the presets again
-
-    } else if (useCustomColorSwitch && presetNumber != 0) {
-        setPreset();
-        UIColor* selectedColor = [SparkColourPickerUtils colourWithString: presetHex withFallback: @"#147efb"];
-
-        if (enabled && colorUIButtonLabelSwitch) {
-		    self.textColor = selectedColor; // same here, but with the presets again
-
-	    }
+        }
 
     } else {
         %orig;
@@ -236,35 +224,29 @@ void setPreset() {
 
     %orig;
 
-    int presetNumber = [selectedPreset intValue];
+    if (enabled && colorMPButtonSwitch) {
+        int presetNumber = [selectedPreset intValue];
 
-    NSDictionary* preferencesDictionary = [NSDictionary dictionaryWithContentsOfFile: @"/var/mobile/Library/Preferences/sh.litten.melodypreferences.plist"];
-    colorString = [preferencesDictionary objectForKey: @"customColor"];
-    customMPButtonString = [preferencesDictionary objectForKey: @"customMPButtonPicker"];
-    
-    if (enabled && useCustomColorSwitch && presetNumber == 0) {
-        UIColor* selectedColor = [SparkColourPickerUtils colourWithString: colorString withFallback: @"#147efb"];
+        NSDictionary* preferencesDictionary = [NSDictionary dictionaryWithContentsOfFile: @"/var/mobile/Library/Preferences/sh.litten.melodypreferences.plist"];
+        colorString = [preferencesDictionary objectForKey: @"customColor"];
+        customMPButtonString = [preferencesDictionary objectForKey: @"customMPButtonPicker"];
+        
+        if (useCustomColorSwitch && presetNumber == 0) {
+            UIColor* selectedColor = [SparkColourPickerUtils colourWithString: colorString withFallback: @"#147efb"];
 
-        if (enabled && colorMPButtonSwitch) {
-		    self.tintColor = selectedColor;
+            self.tintColor = selectedColor;
 
-	    }
+        } else if (useCustomColorSwitch && useCustomMPButtonColorSwitch) {
+            UIColor* selectedCustomColor = [SparkColourPickerUtils colourWithString: customMPButtonString withFallback: @"#147efb"];
+            self.tintColor = selectedCustomColor;
 
-    } else if (useCustomColorSwitch && useCustomMPButtonColorSwitch) {
-        UIColor* selectedCustomColor = [SparkColourPickerUtils colourWithString: customMPButtonString withFallback: @"#147efb"];
-        self.tintColor = selectedCustomColor;
+        } else if (useCustomColorSwitch && presetNumber != 0) {
+            setPreset();
+            UIColor* selectedColor = [SparkColourPickerUtils colourWithString: presetHex withFallback: @"#147efb"];
+            
+            self.tintColor = selectedColor;
 
-    } else if (useCustomColorSwitch && presetNumber != 0) {
-        setPreset();
-        UIColor* selectedColor = [SparkColourPickerUtils colourWithString: presetHex withFallback: @"#147efb"];
-
-        if (enabled && colorMPButtonSwitch) {
-		    self.tintColor = selectedColor;
-
-	    }
-
-    } else {
-        %orig;
+        }
 
     }
 
@@ -278,32 +260,30 @@ void setPreset() {
 
     %orig;
 
-    int presetNumber = [selectedPreset intValue];
+    if (enabled && colorMPRouteButtonSwitch) {
+        int presetNumber = [selectedPreset intValue];
 
-    NSDictionary* preferencesDictionary = [NSDictionary dictionaryWithContentsOfFile: @"/var/mobile/Library/Preferences/sh.litten.melodypreferences.plist"];
-    colorString = [preferencesDictionary objectForKey: @"customColor"];
-    customMPRouteButtonString = [preferencesDictionary objectForKey: @"customMPRouteButtonPicker"];
-    
-    if (enabled && useCustomColorSwitch && presetNumber == 0) {
-        UIColor* selectedColor = [SparkColourPickerUtils colourWithString: colorString withFallback: @"#147efb"];
+        NSDictionary* preferencesDictionary = [NSDictionary dictionaryWithContentsOfFile: @"/var/mobile/Library/Preferences/sh.litten.melodypreferences.plist"];
+        colorString = [preferencesDictionary objectForKey: @"customColor"];
+        customMPRouteButtonString = [preferencesDictionary objectForKey: @"customMPRouteButtonPicker"];
+        
+        if (useCustomColorSwitch && presetNumber == 0) {
+            UIColor* selectedColor = [SparkColourPickerUtils colourWithString: colorString withFallback: @"#147efb"];
+            
+            self.tintColor = selectedColor;
 
-        if (enabled && colorMPRouteButtonSwitch) {
-		    self.tintColor = selectedColor;
+        } else if (useCustomColorSwitch && useCustomMPRouteButtonColorSwitch) {
+            UIColor* selectedCustomColor = [SparkColourPickerUtils colourWithString: customMPRouteButtonString withFallback: @"#147efb"];
+            
+            self.tintColor = selectedCustomColor;
 
-	    }
+        } else if (useCustomColorSwitch && presetNumber != 0) {
+            setPreset();
+            UIColor* selectedColor = [SparkColourPickerUtils colourWithString: presetHex withFallback: @"#147efb"];
+            
+            self.tintColor = selectedColor;
 
-    } else if (useCustomColorSwitch && useCustomMPRouteButtonColorSwitch) {
-        UIColor* selectedCustomColor = [SparkColourPickerUtils colourWithString: customMPRouteButtonString withFallback: @"#147efb"];
-        self.tintColor = selectedCustomColor;
-
-    } else if (useCustomColorSwitch && presetNumber != 0) {
-        setPreset();
-        UIColor* selectedColor = [SparkColourPickerUtils colourWithString: presetHex withFallback: @"#147efb"];
-
-        if (enabled && colorMPRouteButtonSwitch) {
-		    self.tintColor = selectedColor;
-
-	    }
+        }
 
     }
 
@@ -317,34 +297,80 @@ void setPreset() {
 
     %orig;
 
-    int presetNumber = [selectedPreset intValue];
+    if (enabled && colorUISwitchSwitch) {
+        int presetNumber = [selectedPreset intValue];
 
-    NSDictionary* preferencesDictionary = [NSDictionary dictionaryWithContentsOfFile: @"/var/mobile/Library/Preferences/sh.litten.melodypreferences.plist"];
-    colorString = [preferencesDictionary objectForKey: @"customColor"];
-    customUISwitchString = [preferencesDictionary objectForKey: @"customUISwitchPicker"];
-    
-    if (enabled && useCustomColorSwitch && presetNumber == 0) {
-        UIColor* selectedColor = [SparkColourPickerUtils colourWithString: colorString withFallback: @"#147efb"];
+        NSDictionary* preferencesDictionary = [NSDictionary dictionaryWithContentsOfFile: @"/var/mobile/Library/Preferences/sh.litten.melodypreferences.plist"];
+        colorString = [preferencesDictionary objectForKey: @"customColor"];
+        customUISwitchString = [preferencesDictionary objectForKey: @"customUISwitchPicker"];
+        
+        if (useCustomColorSwitch && presetNumber == 0) {
+            UIColor* selectedColor = [SparkColourPickerUtils colourWithString: colorString withFallback: @"#147efb"];
 
-        if (enabled && colorUISwitchSwitch) {
             [self setOnTintColor: selectedColor]; // we use this to set the switches color
 
-	    }
+        } else if (useCustomColorSwitch && useCustomUISwitchColorSwitch) {
+            UIColor* selectedCustomColor = [SparkColourPickerUtils colourWithString: customUISwitchString withFallback: @"#147efb"];
+            [self setOnTintColor: selectedCustomColor]; // same here
 
-    } else if (useCustomColorSwitch && useCustomUISwitchColorSwitch) {
-        UIColor* selectedCustomColor = [SparkColourPickerUtils colourWithString: customUISwitchString withFallback: @"#147efb"];
-        [self setOnTintColor: selectedCustomColor]; // same here
+        } else if (useCustomColorSwitch && presetNumber != 0) {
+            setPreset();
+            UIColor* selectedColor = [SparkColourPickerUtils colourWithString: presetHex withFallback: @"#147efb"];
 
-    } else if (useCustomColorSwitch && presetNumber != 0) {
-        setPreset();
-        UIColor* selectedColor = [SparkColourPickerUtils colourWithString: presetHex withFallback: @"#147efb"];
-
-        if (enabled && colorUISwitchSwitch) {
             [self setOnTintColor: selectedColor]; // and here
 
-	    }
+        }
 
-    } 
+    }
+
+}
+
+%end
+
+%hook CSQuickActionsButton
+
+- (void)layoutSubviews {
+
+    %orig;
+
+    if (enabled && colorCSQuickActionsButtonSwitch) {
+        int presetNumber = [selectedPreset intValue];
+
+        NSDictionary* preferencesDictionary = [NSDictionary dictionaryWithContentsOfFile: @"/var/mobile/Library/Preferences/sh.litten.melodypreferences.plist"];
+        colorString = [preferencesDictionary objectForKey: @"customColor"];
+        customCSQuickActionsButtonString = [preferencesDictionary objectForKey: @"customCSQuickActionsButtonPicker"];
+        
+        if (useCustomColorSwitch && presetNumber == 0) {
+            UIColor* selectedColor = [SparkColourPickerUtils colourWithString: colorString withFallback: @"#ffffff"];
+            UIViewController* ancestor = [self _viewControllerForAncestor];
+
+            if ([ancestor isKindOfClass: %c(CSQuickActionsViewController)]) {
+                self.tintColor = selectedColor;
+
+            }
+
+        } else if (useCustomColorSwitch && useCustomCSQuickActionsButtonColorSwitch) {
+            UIColor* selectedCustomColor = [SparkColourPickerUtils colourWithString: customCSQuickActionsButtonString withFallback: @"#ffffff"];
+            UIViewController* ancestor = [self _viewControllerForAncestor];
+
+            if ([ancestor isKindOfClass: %c(CSQuickActionsViewController)]) {
+                self.tintColor = selectedCustomColor;
+
+            }
+
+        } else if (useCustomColorSwitch && presetNumber != 0) {
+            setPreset();
+            UIColor* selectedColor = [SparkColourPickerUtils colourWithString: presetHex withFallback: @"#ffffff"];
+            UIViewController* ancestor = [self _viewControllerForAncestor];
+
+            if ([ancestor isKindOfClass: %c(CSQuickActionsViewController)]) {
+                self.tintColor = selectedColor;
+
+            }
+
+        }
+
+    }
 
 }
 
@@ -432,6 +458,7 @@ void setPreset() {
     [pfs registerBool:&colorMPButtonSwitch default:NO forKey:@"colorMPButton"];
     [pfs registerBool:&colorMPRouteButtonSwitch default:NO forKey:@"colorMPRouteButton"];
     [pfs registerBool:&colorUISwitchSwitch default:NO forKey:@"colorUISwitch"];
+    [pfs registerBool:&colorCSQuickActionsButtonSwitch default:NO forKey:@"colorCSQuickActionsButton"];
     // Color Options
     [pfs registerBool:&useCustomColorSwitch default:NO forKey:@"useCustomColor"];
     [pfs registerObject:&colorString default:@"#147efb" forKey:@"customColor"];
@@ -457,6 +484,9 @@ void setPreset() {
 
     [pfs registerBool:&useCustomUISwitchColorSwitch default:NO forKey:@"useCustomUISwitchColor"];
     [pfs registerObject:&customUISwitchString default:@"#147efb" forKey:@"customUISwitchPicker"];
+
+    [pfs registerBool:&useCustomCSQuickActionsButtonColorSwitch default:NO forKey:@"useCustomCSQuickActionsButtonColor"];
+    [pfs registerObject:&customCSQuickActionsButtonString default:@"#ffffff" forKey:@"customCSQuickActionsButtonPicker"];
 
 	if (!dpkgInvalid && enabled) {
         BOOL ok = false;
