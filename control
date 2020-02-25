@@ -1,7 +1,7 @@
 Package: sh.litten.melody
 Name: Melody 🎶
 Depends: mobilesubstrate, preferenceloader, firmware (>= 11), ws.hbang.common (>= 1.14), com.spark.libsparkcolourpicker
-Version: 1.1
+Version: 1.2
 Architecture: iphoneos-arm
 Description: Can You Hear Those Colorful Melodies?
 Maintainer: Litten <hello@litten.sh>

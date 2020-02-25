@@ -17,6 +17,7 @@ BOOL colorUIButtonLabelSwitch = NO;
 BOOL colorMPButtonSwitch = NO;
 BOOL colorMPRouteButtonSwitch = NO;
 BOOL colorUISwitchSwitch = NO;
+BOOL colorUISwitchThumbSwitch = NO;
 BOOL colorCSQuickActionsButtonSwitch = NO;
 // Color Options
 BOOL useCustomColorSwitch = NO;
@@ -45,6 +46,9 @@ NSString* customMPRouteButtonString = @"#147efb";
 
 BOOL useCustomUISwitchColorSwitch = NO;
 NSString* customUISwitchString = @"#147efb";
+
+BOOL useCustomUISwitchThumbColorSwitch = NO;
+NSString* customUISwitchThumbString = @"#147efb";
 
 BOOL useCustomCSQuickActionsButtonColorSwitch = NO;
 NSString* customCSQuickActionsButtonString = @"#ffffff";

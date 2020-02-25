@@ -323,6 +323,32 @@ void setPreset() {
 
     }
 
+    if (enabled && colorUISwitchThumbSwitch) {
+        int presetNumber = [selectedPreset intValue];
+
+        NSDictionary* preferencesDictionary = [NSDictionary dictionaryWithContentsOfFile: @"/var/mobile/Library/Preferences/sh.litten.melodypreferences.plist"];
+        colorString = [preferencesDictionary objectForKey: @"customColor"];
+        customUISwitchThumbString = [preferencesDictionary objectForKey: @"customUISwitchThumbPicker"];
+        
+        if (useCustomColorSwitch && presetNumber == 0) {
+            UIColor* selectedColor = [SparkColourPickerUtils colourWithString: colorString withFallback: @"#147efb"];
+
+            [self setThumbTintColor: selectedColor];
+
+        } else if (useCustomColorSwitch && useCustomUISwitchThumbColorSwitch) {
+            UIColor* selectedCustomColor = [SparkColourPickerUtils colourWithString: customUISwitchThumbString withFallback: @"#147efb"];
+            [self setThumbTintColor: selectedCustomColor];
+
+        } else if (useCustomColorSwitch && presetNumber != 0) {
+            setPreset();
+            UIColor* selectedColor = [SparkColourPickerUtils colourWithString: presetHex withFallback: @"#147efb"];
+
+            [self setThumbTintColor: selectedColor];
+
+        }
+
+    }
+
 }
 
 %end
@@ -458,6 +484,7 @@ void setPreset() {
     [pfs registerBool:&colorMPButtonSwitch default:NO forKey:@"colorMPButton"];
     [pfs registerBool:&colorMPRouteButtonSwitch default:NO forKey:@"colorMPRouteButton"];
     [pfs registerBool:&colorUISwitchSwitch default:NO forKey:@"colorUISwitch"];
+    [pfs registerBool:&colorUISwitchThumbSwitch default:NO forKey:@"colorUISwitchThumb"];
     [pfs registerBool:&colorCSQuickActionsButtonSwitch default:NO forKey:@"colorCSQuickActionsButton"];
     // Color Options
     [pfs registerBool:&useCustomColorSwitch default:NO forKey:@"useCustomColor"];
@@ -482,8 +509,8 @@ void setPreset() {
     [pfs registerBool:&useCustomMPRouteButtonColorSwitch default:NO forKey:@"useCustomMPRouteButtonColor"];
     [pfs registerObject:&customMPRouteButtonString default:@"#147efb" forKey:@"customMPRouteButtonPicker"];
 
-    [pfs registerBool:&useCustomUISwitchColorSwitch default:NO forKey:@"useCustomUISwitchColor"];
-    [pfs registerObject:&customUISwitchString default:@"#147efb" forKey:@"customUISwitchPicker"];
+    [pfs registerBool:&useCustomUISwitchThumbColorSwitch default:NO forKey:@"useCustomUISwitchThumbColor"];
+    [pfs registerObject:&customUISwitchThumbString default:@"#147efb" forKey:@"customUISwitchThumbPicker"];
 
     [pfs registerBool:&useCustomCSQuickActionsButtonColorSwitch default:NO forKey:@"useCustomCSQuickActionsButtonColor"];
     [pfs registerObject:&customCSQuickActionsButtonString default:@"#ffffff" forKey:@"customCSQuickActionsButtonPicker"];
