@@ -79,6 +79,10 @@ NSString* customCSQuickActionsButtonString = @"#ffffff";
 - (id)_viewControllerForAncestor;
 @end
 
+@interface _UIStatusBarWifiSignalView : UIView
+//@property(nonatomic, assign, readwrite)UIColor* tintColor;
+@end
+
 @interface SBIconController : UIViewController
 - (void)viewDidAppear:(BOOL)animated;
 @end
