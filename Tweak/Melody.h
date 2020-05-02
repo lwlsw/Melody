@@ -9,7 +9,7 @@ HBPreferences *pfs;
 BOOL dpkgInvalid = NO;
 
 // Option Switches
-BOOL enabled = YES;
+extern BOOL enabled;
 BOOL colorUIButtonSwitch = NO;
 BOOL colorUIButtonBarButtonSwitch = NO;
 BOOL colorUITabBarButtonSwitch = NO;

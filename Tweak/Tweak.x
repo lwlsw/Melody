@@ -1,22 +1,6 @@
 #import "Melody.h"
 
-/*
-Color HEX codes
- #custom:
- #eeabff litten's pink
- #abefcb litten's green
- #9966ff taki's purple
- default:
- #147efb systemBlue
- #34c759 systemGreen
- #5856D6 systemIndigo
- #ff9500 systemOrange
- #ff2d55 systemPink
- #af52de systemPurple
- #ff3b30 systemRed
- #5ac8fa systemTeal
- #ffcc00 systemYellow
-*/
+BOOL enabled;
 
     // This function sets the presetHEX NSString to the appropriate value depending on the list view's selected cell
 void setPreset() {
@@ -475,7 +459,7 @@ void setPreset() {
 
     pfs = [[HBPreferences alloc] initWithIdentifier:@"sh.litten.melodypreferences"];
     // Enabled Switch
-    [pfs registerBool:&enabled default:YES forKey:@"Enabled"];
+    [pfs registerBool:&enabled default:nil forKey:@"Enabled"];
     // Option Switches
     [pfs registerBool:&colorUIButtonSwitch default:NO forKey:@"colorUIButton"];
     [pfs registerBool:&colorUIButtonBarButtonSwitch default:NO forKey:@"colorUIButtonBarButton"];

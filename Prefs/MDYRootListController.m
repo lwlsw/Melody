@@ -1,4 +1,9 @@
 #include "MDYRootListController.h"
+#import <Cephei/HBRespringController.h>
+#import "../Tweak/Melody.h"
+#import <spawn.h>
+
+BOOL enabled = NO;
 
 @implementation MDYRootListController
 
@@ -8,18 +13,17 @@
     if (self) {
         MDYAppearanceSettings *appearanceSettings = [[MDYAppearanceSettings alloc] init];
         self.hb_appearanceSettings = appearanceSettings;
-        self.respringButton = [[UIBarButtonItem alloc] initWithTitle:@"ReSpring"
-                                    style:UIBarButtonItemStylePlain
-                                    target:self
-                                    action:@selector(respring)];
-        self.respringButton.tintColor = [UIColor whiteColor];
-        self.navigationItem.rightBarButtonItem = self.respringButton;
+        self.enableSwitch = [[UISwitch alloc] init];
+        self.enableSwitch.onTintColor = [UIColor colorWithRed:1.00 green:0.96 blue:0.64 alpha:1.0];
+        [self.enableSwitch addTarget:self action:@selector(toggleState) forControlEvents:UIControlEventTouchUpInside];
+        UIBarButtonItem* switchy = [[UIBarButtonItem alloc] initWithCustomView: self.enableSwitch];
+        self.navigationItem.rightBarButtonItem = switchy;
 
         self.navigationItem.titleView = [UIView new];
         self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,0,10,10)];
         self.titleLabel.font = [UIFont boldSystemFontOfSize:17];
         self.titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
-        self.titleLabel.text = @"Melody";
+        self.titleLabel.text = @"1.2.3";
         self.titleLabel.textColor = [UIColor whiteColor];
         self.titleLabel.textAlignment = NSTextAlignmentCenter;
         [self.navigationItem.titleView addSubview:self.titleLabel];
@@ -57,11 +61,6 @@
 - (void)viewDidLoad {
 
 	[super viewDidLoad];
-
-    if (@available(iOS 11, *)) {
-		self.navigationController.navigationBar.prefersLargeTitles = false;
-		self.navigationController.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
-	}
 
     self.headerView = [[UIView alloc] initWithFrame:CGRectMake(0,0,200,200)];
     self.headerImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0,0,200,200)];
@@ -102,14 +101,9 @@
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 
-    if (@available(iOS 11, *)) {
-		self.navigationController.navigationBar.prefersLargeTitles = false;
-		self.navigationController.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
-	}
-
     [self.navigationController.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
 
-    [self showThanksAlert];
+    [self setEnableSwitchState];
 
 }
 
@@ -138,48 +132,87 @@
     self.headerImageView.frame = CGRectMake(0, offsetY, self.headerView.frame.size.width, 200 - offsetY);
 }
 
--(void)respring {
-	UIAlertController *respring = [UIAlertController alertControllerWithTitle:@"Melody"
-													 message:@"Do you really want to ReSpring?"
-													 preferredStyle:UIAlertControllerStyleAlert];
-	UIAlertAction *confirmAction = [UIAlertAction actionWithTitle:@"Confirm" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * action) {
-			[self respringUtil];
-	}];
+- (void)toggleState {
 
-	UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
-	[respring addAction:confirmAction];
-	[respring addAction:cancelAction];
-	[self presentViewController:respring animated:YES completion:nil];
+    self.enableSwitch.enabled = NO;
 
-}
-
--(void)respringUtil {
-	NSTask *t = [[NSTask alloc] init];
-    [t setLaunchPath:@"/usr/bin/killall"];
-    [t setArguments:[NSArray arrayWithObjects:@"backboardd", nil]];
-    [t launch];
-}
-
--(IBAction)twitterEsquilli {
-    NSURL *URL = [NSURL URLWithString: @"https://github.com/Litteeen"];
-    [[UIApplication sharedApplication] openURL:URL options:@{} completionHandler:nil];
-}
-
-- (void)showThanksAlert {
-
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSString* pathForMelodyPlist = @"/var/mobile/Library/Preferences/sh.litten.melodypreferences.plist";
-
-    if (!([fileManager fileExistsAtPath:pathForMelodyPlist])) {
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Melody"
-        message:@"Thanks For Downloading Melody 🌸\nI hope you enjoy it 😊\n\n[Toggle Anything In The Prefs To Make This Alert Not Show Anymore]"
-        preferredStyle:UIAlertControllerStyleAlert];
-
-        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Understood" style:UIAlertActionStyleCancel handler:nil];
-        [alert addAction:cancelAction];
-        [self presentViewController:alert animated:YES completion:nil];
+    HBPreferences *pfs = [[HBPreferences alloc] initWithIdentifier: @"sh.litten.melodypreferences"];
+    
+    if ([[pfs objectForKey:@"Enabled"] isEqual: @(NO)]) {
+        enabled = YES;
+        [pfs setBool:enabled forKey: @"Enabled"];
+        [self respringUtil];
+        
+    } else if ([[pfs objectForKey:@"Enabled"] isEqual: @(YES)]) {
+        enabled = NO;
+        [pfs setBool:enabled forKey: @"Enabled"];
+        [self respringUtil];
 
     }
+
+}
+
+- (void)setEnableSwitchState {
+
+    NSString* path = [NSString stringWithFormat:@"/var/mobile/Library/Preferences/sh.litten.melodypreferences.plist"];
+    NSMutableDictionary* dictionary = [NSMutableDictionary dictionaryWithContentsOfFile:path];
+    NSSet* allKeys = [NSSet setWithArray:[dictionary allKeys]];
+    
+    if (!([allKeys containsObject:@"Enabled"])) {
+        [self.enableSwitch setOn:NO animated: YES];
+
+    } else if ([[dictionary objectForKey:@"Enabled"] isEqual: @(YES)]) {
+        [self.enableSwitch setOn:YES animated: YES];
+
+    } else if ([[dictionary objectForKey:@"Enabled"] isEqual: @(NO)]) {
+        [self.enableSwitch setOn:NO animated: YES];
+        
+    }
+
+}
+
+- (void)resetPrompt {
+
+    UIAlertController *resetAlert = [UIAlertController alertControllerWithTitle:@"Melody"
+	message:@"Do You Really Want To Reset Your Preferences?"
+	preferredStyle:UIAlertControllerStyleActionSheet];
+	
+    UIAlertAction *confirmAction = [UIAlertAction actionWithTitle:@"Yep" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * action) {
+			
+        [self resetPreferences];
+
+	}];
+
+	UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Nope" style:UIAlertActionStyleCancel handler:nil];
+
+	[resetAlert addAction:confirmAction];
+	[resetAlert addAction:cancelAction];
+
+	[self presentViewController:resetAlert animated:YES completion:nil];
+
+}
+
+- (void)resetPreferences {
+
+    HBPreferences *pfs = [[HBPreferences alloc] initWithIdentifier: @"sh.litten.melodypreferences"];
+    for (NSString *key in [pfs dictionaryRepresentation]) {
+        [pfs removeObjectForKey:key];
+
+    }
+    
+    [self.enableSwitch setOn:NO animated: YES];
+    [self respringUtil];
+
+}
+
+- (void)respringUtil {
+
+    pid_t pid;
+    const char *args[] = {"killall", "backboardd", NULL};
+
+    [HBRespringController respringAndReturnTo:[NSURL URLWithString:@"prefs:root=Melody"]];
+
+    posix_spawn(&pid, "/usr/bin/killall", NULL, NULL, (char *const *)args, NULL);
 
 }
 
